@@ -1,0 +1,78 @@
+{
+  "consumer": {
+    "name": "MyConsumer"
+  },
+  "provider": {
+    "name": "VoucherManager"
+  },
+  "interactions": [
+    {
+      "description": "a request for a voucher",
+      "providerState": "i have a voucher with a matching id",
+      "request": {
+        "method": "GET",
+        "path": "/vouchers/1234",
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "promotionId": 1234,
+          "primaryProductId": 9999
+        }
+      }
+    },
+    {
+      "description": "a request for a voucher",
+      "providerState": "i have NO voucher with a matching id",
+      "request": {
+        "method": "GET",
+        "path": "/vouchers/4567",
+        "headers": {
+          "Accept": "application/json"
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "description": "a request to create a voucher",
+      "request": {
+        "method": "POST",
+        "path": "/vouchers",
+        "headers": {
+          "Accept": "application/json",
+          "x-skyott-platform": "PC",
+          "x-skyott-territory": "JC",
+          "x-skyott-provider": "MOCK",
+          "x-skyott-proposition": "MOCK",
+          "x-SkyId-Token": "01-valid_user"
+        },
+        "body": "[{\"code\":\"MYENTSVOUCHER\",\"action\":\"ADD\"}]"
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "voucherId": 6789
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
