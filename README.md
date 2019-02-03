@@ -7,4 +7,4 @@ Provider project: https://github.com/mrmgreen/consumer-contract-testing-provider
 
 ## Pact Broker
 For the Pact broker I am using the Pact docker image https://hub.docker.com/r/dius/pact-broker
-This depends on a Postgres DB. I am using the docker Postgres https://hub.docker.com/_/postgres
+The Pact broker depends on a Postgres instance. There is a docker compose within the Pact broker repo that spins up pact and Postgres: https://github.com/DiUS/pact_broker-docker#running-with-docker-compose
