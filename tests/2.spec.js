@@ -25,7 +25,7 @@ describe("The voucher API", () => {
   after(() => provider.finalize());
 
   // verify with Pact, and reset expectations
-  afterEach(() => provider.verify());
+  afterEach(() => { console.log('afterEach'); return provider.verify();})
 
   describe("GET /voucher with a valid voucher", () => {
     const validVoucherId = 1234;
@@ -34,7 +34,7 @@ describe("The voucher API", () => {
       primaryProductId: 9999
     
     };
-    before(done => {
+    before(() => {
       const interaction = {
         state: "i have a voucher with a matching id",
         uponReceiving: "a request for a voucher",
@@ -48,27 +48,26 @@ describe("The voucher API", () => {
         willRespondWith: {
           status: 200,
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json; charset=utf-8"
           },
           body: EXPECTED_BODY
         }
       };
-      provider.addInteraction(interaction).then(() => {
-        done();
-      });
+      return provider.addInteraction(interaction).then(() =>{});
     });
 
-    it("returns the voucher data", done => {
-      getVouchers(validVoucherId).then(response => {
+    it("returns the voucher data", () => {
+      return getVouchers(validVoucherId)
+      .then(response => {
         expect(response.data).to.eql(EXPECTED_BODY);
-        done();
-      }, done);
+      })
+      .catch((e) => expect(true).to.be(false))
     });
   });
 
   describe("GET /voucher with an invalid voucher", () => {
     const invalidVoucherId = 4567;
-    before(done => {
+    before(() => {
       const interaction = {
         state: "i have NO voucher with a matching id",
         uponReceiving: "a request for a voucher",
@@ -80,30 +79,24 @@ describe("The voucher API", () => {
           }
         },
         willRespondWith: {
-          status: 404,
-          headers: {
-            "Content-Type": "application/json"
-          }
+          status: 404
         }
       };
-      provider.addInteraction(interaction).then(() => {
-        done();
-      });
+      return provider.addInteraction(interaction).then(() => {});
     });
 
-    it("returns a 404", done => {
-      getVouchers(invalidVoucherId)
+    it("returns a 404", () => {
+      return getVouchers(invalidVoucherId)
       .then()
       .catch((e) => { 
         expect(e.response.status).to.eql(404);
-        done();
       });
     });
   });
 
   describe("POST /voucher with a voucher", () => {
-    const voucherDetails = [{code:"MYENTSVOUCHER", action:"ADD"}];
-    before(done => {
+    const voucherDetails = { code: "MYENTSVOUCHER", action : "ADD" };
+    before(() => {
       const interaction = {
         uponReceiving: "a request to create a voucher",
         withRequest: {
@@ -111,35 +104,35 @@ describe("The voucher API", () => {
           path: `/vouchers`,
           headers: {
             "Accept": "application/json",
+            "Content-Type": "application/json",
             "x-skyott-platform": "PC",
             "x-skyott-territory": "JC",
             "x-skyott-provider": "MOCK",
             "x-skyott-proposition": "MOCK",
             "x-SkyId-Token": "01-valid_user"
           },
-          body: JSON.stringify(voucherDetails)
+          body: voucherDetails
         },
         willRespondWith: {
           status: 201,
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json; charset=utf-8"
           },
           body: {
             voucherId: 6789
           }
         }
       };
-      provider.addInteraction(interaction).then(() => {
-        done();
-      });
+      return provider.addInteraction(interaction).then(() => {});
     });
     const EXPECTED_BODY = { voucherId: 6789 };
-    it("returns a 201 and the voucherId", done => {
-      console.log('1 =', JSON.stringify(voucherDetails));
-      addVoucher(voucherDetails).then(response => {
+    it("returns a 201 and the voucherId", () => {
+      return addVoucher(voucherDetails)
+      .then(response => {
         expect(response.data).to.eql(EXPECTED_BODY);
-        done();
-      }, done);
+        console.log('POST SUCCESS');
+      })
+      .catch(e => { console.log('error is...', e);})
     });
   });
 });

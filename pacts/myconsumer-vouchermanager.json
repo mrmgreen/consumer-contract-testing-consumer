@@ -19,7 +19,7 @@
       "response": {
         "status": 200,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "promotionId": 1234,
@@ -40,7 +40,6 @@
       "response": {
         "status": 404,
         "headers": {
-          "Content-Type": "application/json"
         }
       }
     },
@@ -51,18 +50,22 @@
         "path": "/vouchers",
         "headers": {
           "Accept": "application/json",
+          "Content-Type": "application/json",
           "x-skyott-platform": "PC",
           "x-skyott-territory": "JC",
           "x-skyott-provider": "MOCK",
           "x-skyott-proposition": "MOCK",
           "x-SkyId-Token": "01-valid_user"
         },
-        "body": "[{\"code\":\"MYENTSVOUCHER\",\"action\":\"ADD\"}]"
+        "body": {
+          "code": "MYENTSVOUCHER",
+          "action": "ADD"
+        }
       },
       "response": {
         "status": 201,
         "headers": {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json; charset=utf-8"
         },
         "body": {
           "voucherId": 6789

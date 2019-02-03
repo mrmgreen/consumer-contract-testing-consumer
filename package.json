@@ -1,7 +1,7 @@
 {
-  "name": "Consumer for pact testing",
+  "name": "consumer",
   "version": "1.0.0",
-  "description": "",
+  "description": "Consumer for pact testing",
   "main": "index.js",
   "dependencies": {
     "@babel/core": "^7.2.2",
@@ -12,7 +12,8 @@
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "express": "^4.16.4",
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "qs": "^6.6.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.3.1"

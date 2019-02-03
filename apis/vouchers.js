@@ -1,8 +1,8 @@
 const axios = require('axios');
+const port = 8992;
 
 function getVouchers(voucherId) {
   let url = "http://localhost"; // the mock server host and port.
-  const port = 8992;
   
   return axios.request({
     method: 'GET',
@@ -13,9 +13,7 @@ function getVouchers(voucherId) {
 }
 
 function addVoucher(voucherDetails) {
-  console.log('2 =', JSON.stringify(voucherDetails));
   let url = "http://localhost"; // the mock server host and port.
-  const port = 8992;
   
   return axios.request({
     method: 'POST',
@@ -23,13 +21,14 @@ function addVoucher(voucherDetails) {
     url: `/vouchers`,
     headers: { 
       'Accept': 'application/json',
+      'Content-Type': 'application/json',
       "x-skyott-platform": "PC",
       "x-skyott-territory": "JC",
       "x-skyott-provider": "MOCK",
       "x-skyott-proposition": "MOCK",
       "x-SkyId-Token": "01-valid_user" 
     },
-    data: JSON.stringify(voucherDetails)
+    data: voucherDetails
   });
 }
 
