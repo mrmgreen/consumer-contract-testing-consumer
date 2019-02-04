@@ -9,7 +9,7 @@ describe("The voucher API", () => {
 
   const provider = new Pact({
     port: port,
-    log: path.resolve(process.cwd(), "logs", "mockserver-integration.log"),
+    log: path.resolve(process.cwd(), "logs", "mockserver-vouchers-integration.log"),
     logLevel: 'error',
     dir: path.resolve(process.cwd(), "pacts"),
     spec: 2,
@@ -28,7 +28,7 @@ describe("The voucher API", () => {
   afterEach(() => { console.log('afterEach'); return provider.verify();})
 
   describe("GET /voucher with a valid voucher", () => {
-    const validVoucherId = 1234;
+    const validVoucherId = 1235;
     const EXPECTED_BODY = {
       promotionId: validVoucherId,
       primaryProductId: 9999
@@ -61,7 +61,7 @@ describe("The voucher API", () => {
       .then(response => {
         expect(response.data).to.eql(EXPECTED_BODY);
       })
-      .catch((e) => expect(true).to.be(false))
+      .catch((e) => expect(true).to.eql(false))
     });
   });
 
@@ -87,10 +87,8 @@ describe("The voucher API", () => {
 
     it("returns a 404", () => {
       return getVouchers(invalidVoucherId)
-      .then()
-      .catch((e) => { 
-        expect(e.response.status).to.eql(404);
-      });
+      .then(response => expect(true).to.eql(false))
+      .catch((e) => expect(e.response.status).to.eql(404));
     });
   });
 

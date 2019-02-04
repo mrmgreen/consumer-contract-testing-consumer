@@ -1,0 +1,91 @@
+{
+  "consumer": {
+    "name": "MyConsumer"
+  },
+  "provider": {
+    "name": "ProductsManager"
+  },
+  "interactions": [
+    {
+      "description": "a request for the product catalogue",
+      "request": {
+        "method": "GET",
+        "path": "/products",
+        "headers": {
+          "Accept": "application/json",
+          "x-proposition": "tv",
+          "x-provider": "tv",
+          "x-territory": "gb"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "products": [
+            {
+              "available": true,
+              "business_id": "C_3P0",
+              "category": "ENTERTAINMENT",
+              "price": "15",
+              "static_id": "ENTERTAINMENT_SUBSCRIPTION"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "description": "a request for a product",
+      "providerState": "i have a product with the product id",
+      "request": {
+        "method": "GET",
+        "path": "/product/C_3P0",
+        "headers": {
+          "Accept": "application/json",
+          "x-proposition": "tv",
+          "x-provider": "tv",
+          "x-territory": "gb"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json; charset=utf-8"
+        },
+        "body": {
+          "available": true,
+          "business_id": "C_3P0",
+          "category": "ENTERTAINMENT",
+          "price": "15",
+          "static_id": "ENTERTAINMENT_SUBSCRIPTION"
+        }
+      }
+    },
+    {
+      "description": "a request for a product",
+      "providerState": "i do not have a product with the product id",
+      "request": {
+        "method": "GET",
+        "path": "/product/notValid",
+        "headers": {
+          "Accept": "application/json",
+          "x-proposition": "tv",
+          "x-provider": "tv",
+          "x-territory": "gb"
+        }
+      },
+      "response": {
+        "status": 404,
+        "headers": {
+        }
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "2.0.0"
+    }
+  }
+}
