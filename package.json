@@ -19,7 +19,8 @@
     "@babel/preset-env": "^7.3.1"
   },
   "scripts": {
-    "test": "mocha --require @babel/register 'tests/*.spec.js' --timeout 10000"
+    "test": "mocha --require @babel/register 'tests/*.spec.js' --timeout 10000",
+    "can-i-deploy:consumer": "$(find ./node_modules -name pact-broker | grep -e 'bin/pact-broker$' | head -n 1) can-i-deploy --pacticipant 'MyConsumer' --latest --broker-base-url http://localhost"
   },
   "keywords": [],
   "author": "",
