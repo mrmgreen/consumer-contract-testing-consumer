@@ -14,9 +14,9 @@ console.log('publishing files: ', jsonFiles);
 const opts = {
   pactFilesOrDirs: jsonFiles,
   pactBroker: 'http://localhost',
-  consumerVersion: '1.0.1'
+  consumerVersion: '1.0.0'
 }
 
 pact.publishPacts(opts)
-  .then(_ => console.log('Pact publishing was successful'))
+  .then(() => console.log('Pact publishing was successful'))
   .catch(e => console.log('Pact publishing was unsuccessful. Error: ', e));

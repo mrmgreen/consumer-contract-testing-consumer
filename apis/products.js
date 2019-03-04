@@ -1,9 +1,8 @@
 const axios = require('axios');
 const port = 8993;
+const url = "http://localhost";
 
 function getProducts() {
-  let url = "http://localhost"; // the mock server host and port.
-  
   return axios.request({
     method: 'GET',
     baseURL: `${url}:${port}`,
@@ -13,8 +12,6 @@ function getProducts() {
 }
 
 function getProduct(productId) {
-  let url = "http://localhost"; // the mock server host and port.
-  
   return axios.request({
     method: 'GET',
     baseURL: `${url}:${port}`,

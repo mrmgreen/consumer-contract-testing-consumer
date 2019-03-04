@@ -21,10 +21,10 @@ describe("The product API", () => {
   // Setup the provider
   before(() => provider.setup());
 
-  // Write Pact when all tests done
+  // Write Pact when all tests finished
   after(() => provider.finalize());
 
-  // verify with Pact, and reset expectations
+  // Verify with Pact, and reset expectations
   afterEach(() => provider.verify());
 
   describe("GET /products", () => {
@@ -61,7 +61,7 @@ describe("The product API", () => {
       .then(response => {
         expect(response.data).to.eql(EXPECTED_BODY);
       })
-      .catch((e) => expect(true).to.be(false))
+      .catch(() => expect(true).to.be(false))
     });
   });
 
@@ -99,7 +99,7 @@ describe("The product API", () => {
       .then(response => {
         expect(response.data).to.eql(EXPECTED_BODY);
       })
-      .catch((e) => expect(true).to.eql(false))
+      .catch(() => expect(true).to.eql(false))
     });
   });
 
@@ -124,7 +124,7 @@ describe("The product API", () => {
 
     it("returns a 404", () => {
       return getProduct(invalidProductId)
-      .then(response => expect(true).to.eql(false))
+      .then(() => expect(true).to.eql(false))
       .catch((e) => expect(e.response.status).to.eql(404));
     });
   });

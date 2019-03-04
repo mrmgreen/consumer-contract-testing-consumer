@@ -8,7 +8,7 @@
   "interactions": [
     {
       "description": "a request for a voucher",
-      "providerState": "i have a voucher with a matching id",
+      "providerState": "I have a voucher with a matching id",
       "request": {
         "method": "GET",
         "path": "/vouchers/1235",

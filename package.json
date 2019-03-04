@@ -7,22 +7,26 @@
     "@babel/core": "^7.2.2",
     "@babel/node": "^7.2.2",
     "@babel/register": "^7.0.0",
-    "@pact-foundation/pact": "^7.2.0",
+    "@pact-foundation/pact": "^8.0.2",
     "axios": "^0.18.0",
     "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
     "express": "^4.16.4",
-    "mocha": "^5.2.0",
-    "qs": "^6.6.0"
+    "mocha": "^5.2.0"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.3.1"
+    "@babel/preset-env": "^7.3.1",
+    "eslint": "^5.15.0"
   },
   "scripts": {
     "test": "mocha --require @babel/register 'tests/*.spec.js' --timeout 10000",
-    "can-i-deploy:consumer": "$(find ./node_modules -name pact-broker | grep -e 'bin/pact-broker$' | head -n 1) can-i-deploy --pacticipant 'MyConsumer' --latest --broker-base-url http://localhost"
+    "publishPacts": "node tests/publish.js",
+    "can-i-deploy": "$(find ./node_modules -name pact-broker | grep -e 'bin/pact-broker$' | head -n 1) can-i-deploy --pacticipant 'MyConsumer' --latest --broker-base-url http://localhost",
+    "lint": "eslint tests apis" 
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "Consumer Driven Contract Tests",
+    "Pact"
+  ],
+  "author": "Martin Green",
   "license": "ISC"
 }
