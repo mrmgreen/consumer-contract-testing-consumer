@@ -1,8 +1,7 @@
-const path = require('path')
-const chai = require('chai');
-const expect = chai.expect;
-const { Pact } = require('@pact-foundation/pact')
-const { getVouchers, addVoucher } = require('../apis/vouchers');
+import path from 'path';
+import { expect } from 'chai';
+import { Pact } from '@pact-foundation/pact';
+import { getVouchers, addVoucher } from '../apis/vouchers';
 
 describe("The voucher API", () => {
 
@@ -29,7 +28,7 @@ describe("The voucher API", () => {
   describe("GET /voucher with a valid voucher", () => {
     const validVoucherId = 1235;
     
-    before(() => {
+    before(async () => {
       const interaction = {
         state: "I have a voucher with a matching id",
         uponReceiving: "a request for a voucher",
@@ -48,21 +47,18 @@ describe("The voucher API", () => {
           body: { promotionId: validVoucherId, primaryProductId: 9999 }
         }
       };
-      return provider.addInteraction(interaction).then(() =>{});
+      await provider.addInteraction(interaction);
     });
 
-    it("returns the voucher data", () => {
-      return getVouchers(validVoucherId)
-      .then(response => {
-        expect(response.data).to.eql({ promotionId: validVoucherId, primaryProductId: 9999 });
-      })
-      .catch(() => expect(true).to.eql(false))
+    it("returns the voucher data", async () => {
+        const result = await getVouchers(validVoucherId);
+        expect(result.data).to.eql({ promotionId: validVoucherId, primaryProductId: 9999 });
     });
   });
 
   describe("GET /voucher with an invalid voucher", () => {
     const invalidVoucherId = 4567;
-    before(() => {
+    before(async () => {
       const interaction = {
         state: "i have NO voucher with a matching id",
         uponReceiving: "a request for a voucher",
@@ -77,20 +73,24 @@ describe("The voucher API", () => {
           status: 404
         }
       };
-      return provider.addInteraction(interaction).then(() => {});
+      await provider.addInteraction(interaction);
     });
 
-    it("returns a 404", () => {
-      return getVouchers(invalidVoucherId)
-      .then(() => expect(true).to.eql(false))
-      .catch((e) => expect(e.response.status).to.eql(404));
+    it("returns a 404", async () => {
+      let result;
+      try {
+        result = await getVouchers(invalidVoucherId);
+      } catch (e) {
+        expect(e.response.status).to.eql(404);
+      }
+      expect(result).to.eql(undefined);
     });
   });
 
   describe("POST /voucher with a voucher code and action ADD", () => {
     const voucherDetails = { code: "MYENTSVOUCHER", action : "ADD" };
     
-    before(() => {
+    before(async () => {
       const interaction = {
         uponReceiving: "a request to create a voucher",
         withRequest: {
@@ -117,18 +117,14 @@ describe("The voucher API", () => {
           }
         }
       };
-      return provider.addInteraction(interaction).then(() => {});
+      await provider.addInteraction(interaction);
     });
 
     const EXPECTED_BODY = { voucherId: 6789 };
 
-    it("returns a 201 and the voucherId", () => {
-      return addVoucher(voucherDetails)
-      .then(response => {
-        expect(response.data).to.eql(EXPECTED_BODY);
-        console.log('POST SUCCESS');
-      })
-      .catch(e => { console.log('error is...', e);})
+    it("returns a 201 and the voucherId", async () => {
+      const result = await addVoucher(voucherDetails);
+      expect(result.data).to.eql(EXPECTED_BODY);
     });
   });
 });

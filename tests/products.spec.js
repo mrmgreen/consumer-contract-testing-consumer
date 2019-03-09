@@ -1,8 +1,7 @@
-const path = require('path')
-const chai = require('chai');
-const expect = chai.expect;
-const { Pact } = require('@pact-foundation/pact')
-const { getProducts, getProduct } = require('../apis/products');
+import path from 'path';
+import { expect } from 'chai';
+import { Pact } from '@pact-foundation/pact';
+import { getProducts, getProduct } from '../apis/products';
 
 describe("The product API", () => {
   const port = 8993;
@@ -37,7 +36,7 @@ describe("The product API", () => {
         static_id: "ENTERTAINMENT_SUBSCRIPTION"
       }]
     };
-    before(() => {
+    before(async () => {
       const interaction = {
         uponReceiving: "a request for the product catalogue",
         withRequest: {
@@ -53,15 +52,12 @@ describe("The product API", () => {
           body: EXPECTED_BODY
         }
       };
-      return provider.addInteraction(interaction).then(() =>{});
+      await provider.addInteraction(interaction);
     });
 
-    it("returns the product catalogue", () => {
-      return getProducts()
-      .then(response => {
-        expect(response.data).to.eql(EXPECTED_BODY);
-      })
-      .catch(() => expect(true).to.be(false))
+    it("returns the product catalogue", async () => {
+      const results = await getProducts();
+      expect(results.data).to.eql(EXPECTED_BODY);
     });
   });
 
@@ -74,7 +70,7 @@ describe("The product API", () => {
       price: '15',
       static_id: "ENTERTAINMENT_SUBSCRIPTION"
     };
-    before(() => {
+    before(async () => {
       const interaction = {
         state: "i have a product with the product id",
         uponReceiving: "a request for a product",
@@ -91,22 +87,19 @@ describe("The product API", () => {
           body: EXPECTED_BODY
         }
       };
-      return provider.addInteraction(interaction).then(() =>{});
+      await provider.addInteraction(interaction);
     });
 
-    it("returns the product data", () => {
-      return getProduct(validProductId)
-      .then(response => {
-        expect(response.data).to.eql(EXPECTED_BODY);
-      })
-      .catch(() => expect(true).to.eql(false))
+    it("returns the product data", async () => {
+      const results = await getProduct(validProductId)
+      expect(results.data).to.eql(EXPECTED_BODY);
     });
   });
 
   describe("GET /product with an invalid product id", () => {
     const invalidProductId = 'notValid';
 
-    before(() => {
+    before(async () => {
       const interaction = {
         state: "i do not have a product with the product id",
         uponReceiving: "a request for a product",
@@ -119,13 +112,17 @@ describe("The product API", () => {
           status: 404
         }
       };
-      return provider.addInteraction(interaction).then(() =>{});
+      await provider.addInteraction(interaction);
     });
 
-    it("returns a 404", () => {
-      return getProduct(invalidProductId)
-      .then(() => expect(true).to.eql(false))
-      .catch((e) => expect(e.response.status).to.eql(404));
+    it("returns a 404", async () => {
+      let results;
+      try {
+        results = await getProduct(invalidProductId)
+      } catch (e) {
+        expect(e.response.status).to.eql(404);
+      }
+      expect(results).to.eql(undefined);
     });
   });
 });

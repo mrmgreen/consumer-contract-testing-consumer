@@ -21,7 +21,7 @@
     "test": "mocha --require @babel/register 'tests/*.spec.js' --timeout 10000",
     "publishPacts": "node tests/publish.js",
     "can-i-deploy": "$(find ./node_modules -name pact-broker | grep -e 'bin/pact-broker$' | head -n 1) can-i-deploy --pacticipant 'MyConsumer' --latest --broker-base-url http://localhost",
-    "lint": "eslint tests apis" 
+    "lint": "eslint tests apis"
   },
   "keywords": [
     "Consumer Driven Contract Tests",
