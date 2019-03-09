@@ -1,4 +1,5 @@
-const axios = require('axios');
+import axios from 'axios';
+
 const port = 8993;
 const url = "http://localhost";
 
